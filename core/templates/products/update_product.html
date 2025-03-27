@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %} {% trans "Details" %} {% endblock %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+{% load translate_tags %}
+
+<style>
+    body, h2, p, footer {
+        color: black !important;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+
+<div class="details-product-page">
+    <div style="padding-top: 5px; padding-left: 30%; padding-right: 30%; font-family: 'Ubuntu', 'sans-serif';">
+        <div style="background-color: rgba(162, 155, 254, 0.5); border-radius: 10px; padding: 20px;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-success" type="submit" style="font-weight: bold">
+                    {% trans 'Confirm' %}
+                </button>
+                <button onclick="history.back()" class="btn btn-info ml-3" style="font-weight: bold;">
+                    {% trans 'Back' %}
+                </button>
+
+            </form>
+        </div>
+        <footer style="text-align: center; font-size: 12px; margin-top: 15px; font-weight: bold">
+            Background Designed by Freepik
+        </footer>
+    </div>
+
+</div>
+
+{% endblock %}

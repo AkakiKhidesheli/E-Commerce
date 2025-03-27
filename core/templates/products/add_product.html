@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %} {% trans "Adding Product" %} {% endblock %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<style>
+    body, h2, p, footer {
+        color: black !important;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+
+<div class="add-product-page">
+    <div style="padding-top: 5px; padding-left: 30%; padding-right: 30%; font-family: 'Ubuntu', 'sans-serif';">
+        <div style="background-color: rgba(162, 155, 254, 0.5); border-radius: 10px; padding: 20px;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                {{ image_formset.management_form }}
+                {% for form in image_formset %}
+                {{ form|crispy }}
+                {% endfor %}
+                <button type="submit" class="btn btn-success mt-3">{% trans "Add" %}</button>
+                <a href="{% url 'core:product_list' %}" class="btn btn-danger mt-3">{% trans "Cancel" %}</a>
+            </form>
+        </div>
+        <footer style="text-align: center; font-size: 12px; margin-top: 15px; font-weight: bold">
+            Background Designed by Freepik
+        </footer>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %} {% trans "Cart" %} {% endblock %}
+{% block content %}
+{% load static %}
+{% load custom_filters %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@100..900&family=Special+Elite&display=swap');
+
+    .table-container {
+        padding: 0 20px; /* 20px padding on left and right */
+        margin: 0 auto; /* Center the container */
+        max-width: 95%; /* Prevent the table from stretching too wide */
+    }
+</style>
+
+
+<div class="table-container">
+    <table class="table table-hover table-striped">
+        <tr valign="middle" style="font-family: 'Special Elite', 'cursive'">
+            <th></th>
+            <th>
+                {% trans "Product" %}
+            </th>
+            <th>
+                {% trans "Unit Price" %}
+            </th>
+            <th>
+                {% trans "Quantity" %}
+            </th>
+            <th>
+                {% trans "Total Price" %}
+            </th>
+        </tr>
+
+
+        {% for cart_item in cart %}
+        <tr style="font-family: 'Noto Serif Georgian', cursive;" valign="middle">
+            <td>
+                <img src="{{ cart_item.product.images.first.image.url }}" class="card-img-top" alt="..."
+                     style="width: 100px">
+            </td>
+            <td>
+                <a href="{% url 'core:product_details' cart_item.product.id %}"
+                   style="text-decoration: none; color: inherit;">
+                    {{ cart_item.product.name }}
+                </a>
+            </td>
+            <td>
+                {{ cart_item.product.price }} ₾
+            </td>
+            <td>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-secondary d-flex align-items-center justify-content-center"
+                            style="height: 20px; width: 20px;">
+                        -
+                    </button>
+                    <span>{{ cart_item.quantity }}</span>
+                    <button class="btn btn-secondary d-flex align-items-center justify-content-center"
+                            style="height: 20px; width: 20px;">
+                        +
+                    </button>
+                </div>
+            </td>
+            <td>
+                {{ cart_item.product.price|multiply:cart_item.quantity }} ₾
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <table class="table table-hover table-striped">
+        <tr style="font-family: 'Noto Serif Georgian', cursive; text-align: right" valign="middle">
+            <th>{% trans "Subtotal" %} <br>
+                {{ cart|cart_total|floatformat:2 }} ₾
+            </th>
+        </tr>
+    </table>
+    <form method="post" action="{% url 'confirm_order' %}">
+        {% csrf_token %}
+        <button class="btn btn-success" type="submit">
+            {% trans "Confirm Order" %}
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+
