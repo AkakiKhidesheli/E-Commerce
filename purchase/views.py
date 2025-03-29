@@ -27,11 +27,15 @@ class AddProducttoCartView(LoginRequiredMixin, View):
         return JsonResponse({'success': True})
 
 
-class ViewCartView(ListView):
+class ViewCartView(LoginRequiredMixin, ListView):
     model = CartItem
     context_object_name = 'cart'
     paginate_by = 100
     template_name = 'cart.html'
+    login_url = reverse_lazy('core:login')
+
+    # def get_queryset(self):
+    #     return Cart.objects.filter(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -40,9 +44,11 @@ class ViewCartView(ListView):
 
 
 
+
 ### context processor
 
-class ConfirmOrderView(View):
+class ConfirmOrderView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('core:login')
     def post(self, request):
         cart, created = Cart.objects.get_or_create(user=request.user)
         cart_items = CartItem.objects.filter(cart=cart)
@@ -60,21 +66,26 @@ class ConfirmOrderView(View):
         return redirect('orders')
 
 
-class OrderListView(ListView):
+class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     context_object_name = 'orders'
     paginate_by = 10
     template_name = 'order_list.html'
+    login_url = reverse_lazy('core:login')
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = CATEGORY_CHOICES
         return context
 
-class OrderDetailView(DetailView):
+class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     context_object_name = 'order'
     template_name = 'order_details.html'
+    login_url = reverse_lazy('core:login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
