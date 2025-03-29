@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -7,6 +8,8 @@ from django.http import JsonResponse
 
 from core.models import CATEGORY_CHOICES
 from .models import Cart, CartItem, Product, Order, OrderItem
+from django.utils.translation import gettext_lazy as _
+
 
 # Create your views here.
 
@@ -22,6 +25,7 @@ class AddProducttoCartView(LoginRequiredMixin, View):
             cart_item.quantity += 1
         else:
             cart_item.quantity = 1
+
 
         cart_item.save()
         return JsonResponse({'success': True})
@@ -61,6 +65,12 @@ class ConfirmOrderView(LoginRequiredMixin, View):
 
         for cart_item in cart_items:
             product = cart_item.product
+
+            if product.not_in_stock():
+                messages.error(self.request, _(f'Product not in stock: {product.name}'))
+                cart_item.delete()
+                return redirect('view_cart')
+
             product.quantity -= cart_item.quantity
             OrderItem.objects.create(order=order, product=product, quantity=cart_item.quantity)
             product.save()

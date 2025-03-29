@@ -20,6 +20,19 @@
     }
 </style>
 
+    {% if messages %}
+        <div style="padding: 50px">
+        {% for message in messages %}
+            {% if "success" in message.tags %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% elif "error" in message.tags %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    {% endif %}
+
+
 
     <table class="table table-hover table-striped">
         <tr valign="middle" style="font-family: 'Special Elite', 'cursive'">

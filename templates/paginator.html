@@ -6,18 +6,18 @@
     <ul class="pagination">
 
         {% if page_obj.has_previous %}
+{#        <li class="page-item">#}
+{#            <a class="page-link"#}
+{#               href="?page=1={% if language_id %}&language={{ language_id }}{% endif %}">&laquo;</a>#}
+{#        </li>#}
         <li class="page-item">
             <a class="page-link"
-               href="?page=1{% if title %}&search_title={{ title }}{% endif %}{% if author %}&search_author={{ author }}{% endif %}{% if genre_id %}&genre={{ genre_id }}{% endif %}{% if language_id %}&language={{ language_id }}{% endif %}">&laquo;</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link"
-               href="?page={{ page_obj.previous_page_number }}{% if title %}&search_title={{ title }}{% endif %}{% if author %}&search_author={{ author }}{% endif %}{% if genre_id %}&genre={{ genre_id }}{% endif %}{% if language_id %}&language={{ language_id }}{% endif %}">&lt;</a>
+               href="?page={{ page_obj.previous_page_number }}{% if language_id %}&language={{ language_id }}{% endif %}">&lt;</a>
         </li>
         {% else %}
-        <li class="page-item disabled">
-            <span class="page-link">&laquo;</span>
-        </li>
+{#        <li class="page-item disabled">#}
+{#            <span class="page-link">&laquo;</span>#}
+{#        </li>#}
         <li class="page-item disabled">
             <span class="page-link">&lt;</span>
         </li>
@@ -30,7 +30,7 @@
         </li>
 
         {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
-        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if title %}&search_title={{ title }}{% endif %}{% if author %}&search_author={{ author }}{% endif %}{% if genre_id %}&genre={{ genre_id }}{% endif %}{% if language_id %}&language={{ language_id }}{% endif %}">{{ num }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if language_id %}&language={{ language_id }}{% endif %}">{{ num }}</a></li>
         {% endif %}
 
         {% endfor %}
@@ -38,18 +38,18 @@
 
         {% if page_obj.has_next %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if title %}&search_title={{ title }}{% endif %}{% if author %}&search_author={{ author }}{% endif %}{% if genre_id %}&genre={{ genre_id }}{% endif %}{% if language_id %}&language={{ language_id }}{% endif %}">&gt;</a>
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if language_id %}&language={{ language_id }}{% endif %}">&gt;</a>
         </li>
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if title %}&search_title={{ title }}{% endif %}{% if author %}&search_author={{ author }}{% endif %}{% if genre_id %}&genre={{ genre_id }}{% endif %}{% if language_id %}&language={{ language_id }}{% endif %}">&raquo;</a>
-        </li>
+{#        <li class="page-item">#}
+{#            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if language_id %}&language={{ language_id }}{% endif %}">&raquo;</a>#}
+{#        </li>#}
         {% else %}
         <li class="page-item disabled">
             <span class="page-link">&gt;</span>
         </li>
-        <li class="page-item disabled">
-            <span class="page-link">&raquo;</span>
-        </li>
+{#        <li class="page-item disabled">#}
+{#            <span class="page-link">&raquo;</span>#}
+{#        </li>#}
         {% endif %}
     </ul>
 </nav>
