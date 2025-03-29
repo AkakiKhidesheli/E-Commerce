@@ -8,15 +8,19 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@100..900&family=Special+Elite&display=swap');
 
-    .table-container {
+    .table {
         padding: 0 20px;
         margin: 0 auto;
         max-width: 95%;
+        border-radius: 20px !important;
+    }
+    .purchase_button{
+        padding: 20px 40px;
+        margin: 0 auto;
     }
 </style>
 
 
-<div class="table-container">
     <table class="table table-hover table-striped">
         <tr valign="middle" style="font-family: 'Special Elite', 'cursive'">
             <th></th>
@@ -76,13 +80,12 @@
             </th>
         </tr>
     </table>
-    <form method="post" action="{% url 'confirm_order' %}">
+    <form method="post" action="{% url 'confirm_order' %}" class="purchase_button">
         {% csrf_token %}
         <button class="btn btn-success" type="submit">
             {% trans "Confirm Order" %}
         </button>
     </form>
-</div>
 {% endblock %}
 
 

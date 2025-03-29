@@ -34,8 +34,11 @@ class ViewCartView(LoginRequiredMixin, ListView):
     template_name = 'cart.html'
     login_url = reverse_lazy('core:login')
 
-    # def get_queryset(self):
-    #     return Cart.objects.filter(user=self.request.user)
+    def get_queryset(self):
+        # filtered_cart = Cart.objects.filter(user=self.request.user)
+        #return CartItem.objects.filter(cart__in=filtered_cart)
+        filtered_cart = Cart.objects.get(user=self.request.user)
+        return CartItem.objects.filter(cart=filtered_cart)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
