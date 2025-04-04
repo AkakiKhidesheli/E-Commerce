@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %} {% trans "Details" %} {% endblock %}
+
+{% block content %}
+
+    {% load crispy_forms_tags %}
+    {% load translate_tags %}
+
+    <style>
+        body, h2, p, footer {
+            color: black !important;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .carousel-container {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+
+    <div class="details-product-page">
+        <div style="padding-top: 5px; padding-left: 10%; padding-right: 10%; font-family: 'Ubuntu', 'sans-serif';">
+            <div style="background-color: rgba(162, 155, 254, 0.5); border-radius: 10px; padding: 20px;">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <div class="product-container">
+                        <div class="carousel-container">
+                            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel"
+                                 style="border-radius: 20px; width: 400px; margin: 0 auto">
+                                <div class="carousel-inner">
+                                    {% for image in product.images.all %}
+                                        {% if image.image %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <img src="{{ image.image.url }}" class="d-block w-100"
+                                                     alt="Product Image">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExampleAutoplaying"
+                                        data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExampleAutoplaying"
+                                        data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="product-info">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <strong>{% trans 'Price' %}:</strong> {{ product.price }} ₾
+                                    </li>
+                                    <li class="list-group-item"><strong>{% trans 'Quantity' %}:</strong>
+                                        {{ product.quantity }}
+                                    </li>
+                                    {% if product.description %}
+                                        <li class="list-group-item"><strong>{% trans 'Description' %}:</strong>
+                                            {{ product.description }}
+                                        </li>
+                                    {% endif %}
+                                    <li class="list-group-item"><strong>{% trans 'Category' %}:</strong>
+                                        {% with category_trans=product.category|translate %}
+                                            {% trans category_trans %}
+                                        {% endwith %}
+                                    </li>
+                                    {% if product.subcategory %}
+                                        <li class="list-group-item"><strong>{% trans 'Subcategory' %}:</strong>
+                                            {% with subcategory_trans=product.subcategory|translate %}
+                                                {% trans subcategory_trans %}
+                                            {% endwith %}
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <div style="padding-top: 20px">
+                                {% if user.is_authenticated and perms.core.change_product %}
+                                    <a class="btn btn-warning" href="{% url 'core:update_product' product.id %}"
+                                       style="font-weight: bold">
+                                        {% trans 'Edit' %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div style="text-align: right; padding-top: 20px;">
+    <a>
+        <button onclick="history.back()" class="btn btn-info"
+                style="font-weight: bold;">
+            {% trans 'Back' %}
+        </button>
+    </a>
+</div>
+
+            </div>
+            <footer style="text-align: center; font-size: 12px; margin-top: 15px; font-weight: bold">
+                Background Designed by Freepik
+            </footer>
+        </div>
+    </div>
+
+
+
+{% endblock %}
