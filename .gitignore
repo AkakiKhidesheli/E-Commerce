@@ -1,4 +1,4 @@
 .idea
 venv
-smtp_passwords.py
+sensitive.py
 static/css/darkmode.css
