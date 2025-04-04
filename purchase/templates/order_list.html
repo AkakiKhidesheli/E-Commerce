@@ -12,30 +12,30 @@
     </style>
     <div style="background-color: rgba(178, 190, 195,0.1); box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; padding: 20px; width: 60%; margin: 20px auto; ">
 
-            <table class="table table-hover table-striped">
-                <tr valign="middle" style="font-family: 'Special Elite', 'cursive'">
-                    <th>
-                        {% trans "Order ID" %}
-                    </th>
-                    <th>
-                        {% trans "Time" %}
-                    </th>
-                </tr>
+        <table class="table table-hover table-striped">
+            <tr valign="middle" style="font-family: 'Special Elite', 'cursive'">
+                <th>
+                    {% trans "Order ID" %}
+                </th>
+                <th>
+                    {% trans "Time" %}
+                </th>
+            </tr>
 
 
-                {% for order in orders %}
-                    <tr style="font-family: 'Noto Serif Georgian', cursive;" valign="middle">
-                    <td>
-                        <a href="{% url 'order_details' order.id %}"
-                           style="text-decoration: none; color: inherit;">
-                            {{ order.id }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ order.created_at }}
-                    </td>
-                {% endfor %}
-            </table>
-
-        </div>
+            {% for order in orders %}
+                <tr style="font-family: 'Noto Serif Georgian', cursive;" valign="middle">
+                <td>
+                    <a href="{% url 'order_details' order.id %}"
+                       style="text-decoration: none; color: inherit;">
+                        {{ order.id }}
+                    </a>
+                </td>
+                <td>
+                    {{ order.created_at }}
+                </td>
+            {% endfor %}
+        </table>
+        {% include 'paginator.html' %}
+    </div>
 {% endblock %}
