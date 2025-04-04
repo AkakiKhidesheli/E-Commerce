@@ -1461,3 +1461,6 @@ msgstr "შეკვეთის დეტალები"
 
 msgid "Order ID"
 msgstr "შეკვეთის ID"
+
+msgid "Order was declined because following items are not in stock: "
+msgstr "შეკვეთა ვერ შესრულდა, რადგან შემდგომი პროდუქტების მარაგი ამოიწურა: "

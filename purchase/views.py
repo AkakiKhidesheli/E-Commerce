@@ -62,13 +62,18 @@ class ConfirmOrderView(LoginRequiredMixin, View):
 
         order = Order.objects.create(user=request.user)
 
+        declined_items = [item.product.name for item in cart_items if item.product.not_in_stock()]
+        if declined_items:
+            cart_items.filter(product__in=[item.product for item in cart_items if item.product.not_in_stock()]).delete()
+            messages.error(request, (_('Order was declined because following items are not in stock: ')+'; '.join(declined_items)))
+
 
         for cart_item in cart_items:
             product = cart_item.product
 
             if product.not_in_stock():
-                messages.error(self.request, _(f'Product not in stock: {product.name}'))
-                cart_item.delete()
+                # cart_item.delete()
+                order.delete()
                 return redirect('view_cart')
 
             product.quantity -= cart_item.quantity
@@ -82,7 +87,7 @@ class ConfirmOrderView(LoginRequiredMixin, View):
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     context_object_name = 'orders'
-    paginate_by = 10
+    paginate_by = 100
     template_name = 'order_list.html'
     login_url = reverse_lazy('core:login')
 
